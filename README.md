@@ -16,9 +16,13 @@ There are 12 different kinds of blocks *Not like ClearCode*:
 k = Water/LapisBlock
 l = Lava
 
-You can build a Monastry with these blocks!
+There is also one mod *Not like ClearCode*:
 
-Also a big Mansion!
+t = Table
+
+You can build a Monastry with these blocks! *Not like ClearCode*
+
+Also a big Mansion! *Not like ClearCode*
 
 If you have any questions, feel free to report an issue on the github either it is a bug or a question.
 
