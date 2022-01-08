@@ -1,5 +1,8 @@
 from ursina import *
 from ursina.prefabs.first_person_controller import FirstPersonController
+from perlin_noise import PerlinNoise
+import random
+import sys
 
 app = Ursina()
 grass_texture = load_texture('assets/grass_block.jpg')
@@ -16,6 +19,11 @@ wood_texture = load_texture('assets/woodblock.jpg')
 plank_texture = load_texture('assets/woodplanks.jpg')
 water_texture = load_texture('assets/water.jpg')
 lava_texture = load_texture('assets/lava.jpg')
+table_top = load_texture('assets/table_top.png')
+leg1 = load_texture('assets/leg1.png')
+leg2 = load_texture('assets/leg2.png')
+leg3 = load_texture('assets/leg3.png')
+leg4 = load_texture('block images/planks.png')
 punch_sound   = Audio('assets/punch_sound',loop = False, autoplay = False)
 block_pick = 1
 
@@ -43,6 +51,23 @@ def update():
 	if held_keys['0']: block_pick = 10
 	if held_keys['k']: block_pick = 11
 	if held_keys['l']: block_pick = 12
+	if held_keys['t']: block_pick = 13
+	if held_keys['escape']: sys.exit()
+
+class Table(Button):
+	def __init__(self, position = (0,0,0)):
+		super().__init__(
+		parent = scene,
+		model = 'assets/table',
+		position = position,
+		origin_y = 0.75,
+		color = color.color(0,0,random.uniform(0.9,1)),
+		texture = leg4
+		)
+	def input(self, key):
+		if key == 'left mouse down':
+			punch_sound.play()
+			destroy(self)
 
 class Voxel(Button):
 	def __init__(self, position = (0,0,0), texture = grass_texture):
@@ -71,7 +96,7 @@ class Voxel(Button):
 				if block_pick == 10: voxel = Voxel(position = self.position + mouse.normal, texture = plank_texture)
 				if block_pick == 11: voxel = Voxel(position = self.position + mouse.normal, texture = water_texture)
 				if block_pick == 12: voxel = Voxel(position = self.position + mouse.normal, texture = lava_texture)
-
+				if block_pick == 13: table = Table(position = self.position + mouse.normal)
 
 			if key == 'left mouse down':
 				punch_sound.play()
@@ -102,12 +127,19 @@ class Hand(Entity):
 	def passive(self):
 		self.position = Vec2(0.4,-0.6)
 
-	for z in range(50):
-		for x in range(50):
-			voxel = Voxel(position = (x,0,z))
-       
+
+
+noise = PerlinNoise (octaves=3,seed=random.randint(1,1000000))
+
+for z in range(-40,40):
+	for x in range(-40,40):
+	    y = noise([x * .02,z * .02])
+	    y = math.floor(y * 7.5)
+	    voxel = Voxel(position=(x,y,z))
+
 
 player = FirstPersonController()
+player.gravity = 0.3
 sky = Sky()
 hand = Hand()
 
