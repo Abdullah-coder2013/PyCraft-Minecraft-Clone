@@ -26,7 +26,7 @@ block_pick = 1
 
 window.fps_counter.enabled = False
 window.exit_button.visible = True
-window.maximize = True
+window.fullscreen = True
 
 def update():
 	global block_pick
