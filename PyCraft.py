@@ -21,6 +21,7 @@ water_texture = load_texture('assets/water.jpg')
 lava_texture = load_texture('assets/lava.jpg')
 table_texture = load_texture('block images/planks.png')
 sofa_texture = load_texture('block images/sofa.png')
+book_shelf = load_texture('assets/bookshelf.jpg')
 punch_sound   = Audio('assets/punch_sound',loop = False, autoplay = False)
 block_pick = 1
 
@@ -50,6 +51,7 @@ def update():
 	if held_keys['l']: block_pick = 12
 	if held_keys['t']: block_pick = 13
 	if held_keys['y']: block_pick = 14
+	if held_keys['b']: block_pick = 15
 	if held_keys['escape']: sys.exit()
 
 class Table(Button):
@@ -111,6 +113,7 @@ class Voxel(Button):
 				if block_pick == 12: voxel = Voxel(position = self.position + mouse.normal, texture = lava_texture)
 				if block_pick == 13: table = Table(position = self.position + mouse.normal)
 				if block_pick == 14: sofa = Sofa(position = self.position + mouse.normal)
+				if block_pick == 15: voxel = Voxel(position = self.position + mouse.normal, texture = book_shelf)
 
 			if key == 'left mouse down':
 				punch_sound.play()
