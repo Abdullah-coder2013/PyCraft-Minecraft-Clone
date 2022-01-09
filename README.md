@@ -15,6 +15,7 @@ There are 12 different kinds of blocks *Not like ClearCode*:
 0 = WoodPlanks
 k = Water/LapisBlock
 l = Lava
+b = BookShelf
 
 There is also some mods *Not like ClearCode*:
 
