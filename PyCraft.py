@@ -19,11 +19,8 @@ wood_texture = load_texture('assets/woodblock.jpg')
 plank_texture = load_texture('assets/woodplanks.jpg')
 water_texture = load_texture('assets/water.jpg')
 lava_texture = load_texture('assets/lava.jpg')
-table_top = load_texture('assets/table_top.png')
-leg1 = load_texture('assets/leg1.png')
-leg2 = load_texture('assets/leg2.png')
-leg3 = load_texture('assets/leg3.png')
-leg4 = load_texture('block images/planks.png')
+table_texture = load_texture('block images/planks.png')
+sofa_texture = load_texture('block images/sofa.png')
 punch_sound   = Audio('assets/punch_sound',loop = False, autoplay = False)
 block_pick = 1
 
@@ -52,6 +49,7 @@ def update():
 	if held_keys['k']: block_pick = 11
 	if held_keys['l']: block_pick = 12
 	if held_keys['t']: block_pick = 13
+	if held_keys['y']: block_pick = 14
 	if held_keys['escape']: sys.exit()
 
 class Table(Button):
@@ -62,10 +60,25 @@ class Table(Button):
 		position = position,
 		origin_y = 0.75,
 		color = color.color(0,0,random.uniform(0.9,1)),
-		texture = leg4
+		texture = table_texture
 		)
 	def input(self, key):
-		if key == 'left mouse down':
+		if self.hovered and key == 'left mouse down':
+			punch_sound.play()
+			destroy(self)
+
+class Sofa(Button):
+	def __init__(self, position = (0,0,0)):
+		super().__init__(
+		parent = scene,
+		model = 'assets/sofa',
+		position = position,
+		origin_y = 0.75,
+		color = color.color(0,0,random.uniform(0.9,1)),
+		texture = sofa_texture
+		)
+	def input(self, key):
+		if self.hovered and key == 'left mouse down':
 			punch_sound.play()
 			destroy(self)
 
@@ -97,6 +110,7 @@ class Voxel(Button):
 				if block_pick == 11: voxel = Voxel(position = self.position + mouse.normal, texture = water_texture)
 				if block_pick == 12: voxel = Voxel(position = self.position + mouse.normal, texture = lava_texture)
 				if block_pick == 13: table = Table(position = self.position + mouse.normal)
+				if block_pick == 14: sofa = Sofa(position = self.position + mouse.normal)
 
 			if key == 'left mouse down':
 				punch_sound.play()
@@ -129,7 +143,7 @@ class Hand(Entity):
 
 
 
-noise = PerlinNoise (octaves=3,seed=random.randint(1,1000000))
+noise = PerlinNoise(octaves=3,seed=random.randint(1,1000000))
 
 for z in range(-40,40):
 	for x in range(-40,40):
